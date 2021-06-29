@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:books="http://akh.ru/spring-ws/books" xmlns:tns="http://akh.ru/spring-ws/book-service"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="BookService" targetNamespace="http://akh.ru/spring-ws/book-service">
+
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="http://akh.ru/spring-ws/books" schemaLocation="books.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="GetRequest">
+        <wsdl:part element="books:getRequest" name="parameters" />
+    </wsdl:message>
+    <wsdl:message name="GetResponse">
+        <wsdl:part element="books:getResponse" name="result" />
+    </wsdl:message>
+    <wsdl:message name="PutRequest">
+        <wsdl:part element="books:putRequest" name="parameters" />
+    </wsdl:message>
+    <wsdl:message name="PutResponse">
+        <wsdl:part element="books:putResponse" name="result" />
+    </wsdl:message>
+    <wsdl:message name="GetTopBooksRequest">
+        <wsdl:part element="books:getTopBooksRequest" name="parameters" />
+    </wsdl:message>
+    <wsdl:message name="GetTopBooksResponse">
+        <wsdl:part element="books:getTopBooksResponse" name="result" />
+    </wsdl:message>
+    <wsdl:message name="GetBooksByAuthorRequest">
+        <wsdl:part element="books:getBooksByAuthorRequest" name="parameters" />
+    </wsdl:message>
+    <wsdl:message name="GetBooksByAuthorResponse">
+        <wsdl:part element="books:getBooksByAuthorResponse" name="result" />
+    </wsdl:message>
+    <wsdl:message name="GetContentRequest">
+        <wsdl:part element="books:getContentRequest" name="parameters" />
+    </wsdl:message>
+    <wsdl:message name="GetContentResponse">
+        <wsdl:part element="books:getContentResponse" name="result" />
+    </wsdl:message>
+    <wsdl:message name="PutContentRequest">
+        <wsdl:part element="books:putContentRequest" name="parameters" />
+    </wsdl:message>
+
+    <wsdl:portType name="BookService">
+        <wsdl:operation name="Get">
+            <wsdl:input message="tns:GetRequest" />
+            <wsdl:output message="tns:GetResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="Put">
+            <wsdl:input message="tns:PutRequest" />
+            <wsdl:output message="tns:PutResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="GetTopBooks">
+            <wsdl:input message="tns:GetTopBooksRequest" />
+            <wsdl:output message="tns:GetTopBooksResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="GetBooksByAuthor">
+            <wsdl:input message="tns:GetBooksByAuthorRequest" />
+            <wsdl:output message="tns:GetBooksByAuthorResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="GetContent">
+            <wsdl:input message="tns:GetContentRequest" />
+            <wsdl:output message="tns:GetContentResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="PutContent">
+            <wsdl:input message="tns:PutContentRequest" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="BookServiceSOAP" type="tns:BookService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="Get">
+            <soap:operation soapAction="http://akh.ru/spring-ws/book-service/Get" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Put">
+            <soap:operation soapAction="http://akh.ru/spring-ws/book-service/Put" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTopBooks">
+            <soap:operation soapAction="http://akh.ru/spring-ws/book-service/GetTopBooks" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetBooksByAuthor">
+            <soap:operation soapAction="http://akh.ru/spring-ws/book-service/GetBooksByAuthor" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetContent">
+            <soap:operation soapAction="http://akh.ru/spring-ws/book-service/GetContent" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PutContent">
+            <soap:operation soapAction="http://akh.ru/spring-ws/book-service/PutContent" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="BookService">
+        <wsdl:port binding="tns:BookServiceSOAP" name="BookServiceSOAP">
+            <soap:address location="http://hocalhost:8080/bookService/" />
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

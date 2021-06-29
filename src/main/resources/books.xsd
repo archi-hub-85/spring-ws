@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://akh.ru/spring-ws/books" xmlns:tns="http://akh.ru/spring-ws/books" elementFormDefault="qualified">
+
+    <complexType name="Author">
+        <sequence>
+            <element name="id" type="long" nillable="true" />
+            <element name="name" type="string" />
+        </sequence>
+    </complexType>
+    <complexType name="Book">
+        <sequence>
+            <element name="id" type="long" nillable="true" />
+            <element name="title" type="string" />
+            <element name="year" type="int" />
+            <element name="author" type="tns:Author" />
+        </sequence>
+    </complexType>
+    <simpleType name="BookField">
+        <restriction base="string">
+            <enumeration value="ID" />
+            <enumeration value="TITLE" />
+            <enumeration value="YEAR" />
+            <enumeration value="AUTHOR" />
+        </restriction>
+    </simpleType>
+    <complexType name="BookContent">
+        <sequence>
+            <element name="id" type="long" />
+            <element name="fileName" type="string" />
+            <element name="mimeType" type="string" />
+            <element name="content" type="base64Binary" />
+            <element name="size" type="long" />
+        </sequence>
+    </complexType>
+
+    <element name="getRequest">
+        <complexType>
+            <sequence>
+                <element name="id" type="long" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="getResponse">
+        <complexType>
+            <sequence>
+                <element name="result" type="tns:Book" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="putRequest">
+        <complexType>
+            <sequence>
+                <element name="book" type="tns:Book" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="putResponse">
+        <complexType>
+            <sequence>
+                <element name="result" type="long" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="getTopBooksRequest">
+        <complexType>
+            <sequence>
+                <element name="field" type="tns:BookField" />
+                <element name="limit" type="int" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="getTopBooksResponse">
+        <complexType>
+            <sequence>
+                <element name="result" type="tns:Book" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="getBooksByAuthorRequest">
+        <complexType>
+            <sequence>
+                <element name="author" type="string" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="getBooksByAuthorResponse">
+        <complexType>
+            <sequence>
+                <element name="result" type="tns:Book" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="getContentRequest">
+        <complexType>
+            <sequence>
+                <element name="id" type="long" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="getContentResponse">
+        <complexType>
+            <sequence>
+                <element name="result" type="tns:BookContent" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="putContentRequest">
+        <complexType>
+            <sequence>
+                <element name="content" type="tns:BookContent" />
+            </sequence>
+        </complexType>
+    </element>
+
+</schema>
