@@ -33,35 +33,35 @@
         </sequence>
     </complexType>
 
-    <element name="getRequest">
+    <element name="GetRequest">
         <complexType>
             <sequence>
                 <element name="id" type="long" />
             </sequence>
         </complexType>
     </element>
-    <element name="getResponse">
+    <element name="GetResponse">
         <complexType>
             <sequence>
                 <element name="result" type="tns:Book" />
             </sequence>
         </complexType>
     </element>
-    <element name="putRequest">
+    <element name="PutRequest">
         <complexType>
             <sequence>
                 <element name="book" type="tns:Book" />
             </sequence>
         </complexType>
     </element>
-    <element name="putResponse">
+    <element name="PutResponse">
         <complexType>
             <sequence>
                 <element name="result" type="long" />
             </sequence>
         </complexType>
     </element>
-    <element name="getTopBooksRequest">
+    <element name="GetTopBooksRequest">
         <complexType>
             <sequence>
                 <element name="field" type="tns:BookField" />
@@ -69,42 +69,42 @@
             </sequence>
         </complexType>
     </element>
-    <element name="getTopBooksResponse">
+    <element name="GetTopBooksResponse">
         <complexType>
             <sequence>
                 <element name="result" type="tns:Book" minOccurs="0" maxOccurs="unbounded" />
             </sequence>
         </complexType>
     </element>
-    <element name="getBooksByAuthorRequest">
+    <element name="GetBooksByAuthorRequest">
         <complexType>
             <sequence>
                 <element name="author" type="string" />
             </sequence>
         </complexType>
     </element>
-    <element name="getBooksByAuthorResponse">
+    <element name="GetBooksByAuthorResponse">
         <complexType>
             <sequence>
                 <element name="result" type="tns:Book" minOccurs="0" maxOccurs="unbounded" />
             </sequence>
         </complexType>
     </element>
-    <element name="getContentRequest">
+    <element name="GetContentRequest">
         <complexType>
             <sequence>
                 <element name="id" type="long" />
             </sequence>
         </complexType>
     </element>
-    <element name="getContentResponse">
+    <element name="GetContentResponse">
         <complexType>
             <sequence>
                 <element name="result" type="tns:BookContent" />
             </sequence>
         </complexType>
     </element>
-    <element name="putContentRequest">
+    <element name="PutContentRequest">
         <complexType>
             <sequence>
                 <element name="content" type="tns:BookContent" />
