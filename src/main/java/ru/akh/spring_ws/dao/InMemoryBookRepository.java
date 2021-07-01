@@ -19,7 +19,7 @@ import ru.akh.spring_ws.dto.Book;
 import ru.akh.spring_ws.dto.BookContent;
 
 @Repository("bookRepository")
-@Profile("inMemory")
+@Profile({ "inMemory", "default" })
 public class InMemoryBookRepository implements BookRepository {
 
     private static final Map<Book.Field, Comparator<Book>> FIELD_COMPARATORS = new HashMap<>(

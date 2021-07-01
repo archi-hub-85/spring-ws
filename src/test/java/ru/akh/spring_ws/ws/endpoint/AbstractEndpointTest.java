@@ -14,9 +14,9 @@ import ru.akh.spring_ws.AbstractTest;
 import ru.akh.spring_ws.dao.BookRepository;
 import ru.akh.spring_ws.ws.WebServiceConfig;
 
-@SpringBootTest
+@SpringBootTest(properties = "ru.akh.spring-ws.security-enabled=false")
 @Import(WebServiceConfig.class)
-public class AbstractEndpointTest extends AbstractTest {
+abstract class AbstractEndpointTest extends AbstractTest {
 
     protected static final String NAMESPACE_URI = BookEndpoint.NAMESPACE_URI;
 

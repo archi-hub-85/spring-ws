@@ -6,7 +6,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AbstractTest {
+public abstract class AbstractTest {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 

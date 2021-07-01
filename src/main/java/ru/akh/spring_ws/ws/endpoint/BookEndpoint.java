@@ -8,6 +8,8 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import ru.akh.spring_ws.access.SecuredReader;
+import ru.akh.spring_ws.access.SecuredWriter;
 import ru.akh.spring_ws.dao.BookRepository;
 import ru.akh.spring_ws.dto.Book;
 import ru.akh.spring_ws.ws.converter.BookReadConverter;
@@ -36,6 +38,7 @@ public class BookEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetRequest")
     @ResponsePayload
+    @SecuredReader
     public GetResponse get(@RequestPayload GetRequest request) {
         Book book = repository.get(request.getId());
 
@@ -46,6 +49,7 @@ public class BookEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "PutRequest")
     @ResponsePayload
+    @SecuredWriter
     public PutResponse put(@RequestPayload PutRequest request) {
         Book book = BookReadConverter.INSTANCE.convert(request.getBook());
         long id = repository.put(book);
@@ -57,6 +61,7 @@ public class BookEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetTopBooksRequest")
     @ResponsePayload
+    @SecuredReader
     public GetTopBooksResponse getTopBooks(@RequestPayload GetTopBooksRequest request) {
         Book.Field field = Book.Field.valueOf(request.getField().name());
         List<Book> books = repository.getTopBooks(field, request.getLimit());
@@ -71,6 +76,7 @@ public class BookEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetBooksByAuthorRequest")
     @ResponsePayload
+    @SecuredReader
     public GetBooksByAuthorResponse getBooksByAuthor(@RequestPayload GetBooksByAuthorRequest request) {
         List<Book> books = repository.getBooksByAuthor(request.getAuthor());
 

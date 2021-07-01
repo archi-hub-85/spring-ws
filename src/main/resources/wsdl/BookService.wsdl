@@ -125,7 +125,7 @@
 
     <wsdl:service name="BookService">
         <wsdl:port binding="tns:BookServiceSOAP" name="BookServiceSOAP">
-            <soap:address location="http://hocalhost:8080/bookService/" />
+            <soap:address location="http://localhost:8080/ws/bookService/" />
         </wsdl:port>
     </wsdl:service>
 

@@ -1,6 +1,11 @@
 <!DOCTYPE configuration>
 <configuration>
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
     <appender name="file" class="ch.qos.logback.core.FileAppender">
         <file>spring-ws.log</file>
         <encoder>
@@ -8,9 +13,19 @@
         </encoder>
     </appender>
 
+    <logger name="org.springframework" level="info" />
+    <logger name="org.springframework.boot" level="info" />
+    <logger name="org.springframework.security" level="info" />
+    <logger name="org.springframework.ws" level="info" />
+    <logger name="org.springframework.ws.soap.security" level="info" />
+    <logger name="org.apache.wss4j.dom" level="info" />
+
+    <logger name="org.springframework.ws.server.MessageTracing" level="info" />
+
     <logger name="ru.akh.spring_ws" level="debug" />
 
     <root level="info">
+        <appender-ref ref="STDOUT" />
         <appender-ref ref="file" />
     </root>
 
