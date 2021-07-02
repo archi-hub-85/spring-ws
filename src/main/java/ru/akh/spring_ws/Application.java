@@ -2,10 +2,10 @@ package ru.akh.spring_ws;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.PostConstruct;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
@@ -19,6 +19,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,9 +27,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.server.EndpointInterceptor;
+import org.springframework.ws.soap.security.WsSecurityValidationException;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j2.callback.SpringSecurityPasswordValidationCallbackHandler;
-import org.springframework.ws.soap.server.endpoint.SimpleSoapExceptionResolver;
+import org.springframework.ws.soap.server.endpoint.SoapFaultDefinition;
+import org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver;
 
 @SpringBootApplication
 public class Application {
@@ -92,22 +95,35 @@ public class Application {
     @ConditionalOnProperty(name = "ru.akh.spring-ws.security-enabled", havingValue = "true", matchIfMissing = true)
     public static class WsSecurityConfig {
 
-        @Autowired
-        private SimpleSoapExceptionResolver simpleSoapExceptionResolver;
+        @Bean
+        public SoapFaultMappingExceptionResolver soapFaultMappingExceptionResolver() {
+            SoapFaultMappingExceptionResolver exceptionResolver = new SoapFaultMappingExceptionResolver();
 
-        @PostConstruct
-        public void init() {
-            simpleSoapExceptionResolver.setWarnLogCategory(SimpleSoapExceptionResolver.class.getName());
+            // it's the only one way to log exception with stack trace
+            exceptionResolver.setWarnLogCategory("org.springframework.ws.server.endpoint.ExceptionResolverWarnings");
+
+            SoapFaultDefinition defaultFaultDef = new SoapFaultDefinition();
+            defaultFaultDef.setFaultCode(SoapFaultDefinition.SERVER);
+            exceptionResolver.setDefaultFault(defaultFaultDef);
+
+            Properties exceptionMappings = new Properties();
+            exceptionMappings.put(WsSecurityValidationException.class.getName(), SoapFaultDefinition.CLIENT.toString());
+            exceptionMappings.put(AccessDeniedException.class.getName(),
+                    SoapFaultDefinition.CLIENT.toString() + ",Access is denied");
+            exceptionResolver.setExceptionMappings(exceptionMappings);
+
+            return exceptionResolver;
         }
 
         @Bean
         public Wss4jSecurityInterceptor wsSecurityInterceptor(
-                ObjectProvider<CallbackHandler> callbackHandlerProvider) {
+                ObjectProvider<CallbackHandler> callbackHandlerProvider,
+                SoapFaultMappingExceptionResolver exceptionResolver) {
             Wss4jSecurityInterceptor securityInterceptor = new Wss4jSecurityInterceptor();
             securityInterceptor.setValidationActions("UsernameToken");
             securityInterceptor
                     .setValidationCallbackHandlers(callbackHandlerProvider.stream().toArray(CallbackHandler[]::new));
-            securityInterceptor.setExceptionResolver(simpleSoapExceptionResolver);
+            securityInterceptor.setExceptionResolver(exceptionResolver);
             return securityInterceptor;
         }
 
@@ -133,15 +149,17 @@ public class Application {
             super.handleUsernameToken(callback);
 
             String password = callback.getPassword();
-            Matcher matcher = PASSWORD_ALGORITHM_PATTERN.matcher(password);
-            if (matcher.matches()) {
-                String encodingId = matcher.group(1);
-                logger.warn("Password contains encodingId '" + encodingId + "'");
-                if (encodingId.equals("noop")) {
-                    String cleanPassword = matcher.group(2);
-                    callback.setPassword(cleanPassword);
-                } else {
-                    throw new UnsupportedCallbackException(callback, "Cannot decode password");
+            if (password != null) {
+                Matcher matcher = PASSWORD_ALGORITHM_PATTERN.matcher(password);
+                if (matcher.matches()) {
+                    String encodingId = matcher.group(1);
+                    logger.warn("Password contains encodingId '" + encodingId + "'");
+                    if (encodingId.equals("noop")) {
+                        String cleanPassword = matcher.group(2);
+                        callback.setPassword(cleanPassword);
+                    } else {
+                        throw new UnsupportedCallbackException(callback, "Cannot decode password");
+                    }
                 }
             }
         }

@@ -21,9 +21,10 @@
     <logger name="org.springframework.ws.soap.security" level="info" />
     <logger name="org.apache.wss4j.dom" level="info" />
 
-    <logger name="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor" level="debug" />
     <logger name="org.springframework.ws.server.MessageTracing" level="info" />
     <logger name="org.springframework.ws.client.MessageTracing" level="info" />
+    <logger name="org.springframework.ws.server.endpoint.ExceptionResolverWarnings" level="off" />
+    <logger name="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor" level="debug" />
 
     <logger name="ru.akh.spring_ws" level="debug" />
     <logger name="ru.akh.spring_ws.interceptor.DebugInterceptor" level="trace" />

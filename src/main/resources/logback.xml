@@ -21,6 +21,7 @@
     <logger name="org.apache.wss4j.dom" level="info" />
 
     <logger name="org.springframework.ws.server.MessageTracing" level="info" />
+    <logger name="org.springframework.ws.server.endpoint.ExceptionResolverWarnings" level="off" />
 
     <logger name="ru.akh.spring_ws" level="debug" />
 
