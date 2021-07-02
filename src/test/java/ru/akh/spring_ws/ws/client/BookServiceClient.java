@@ -7,16 +7,21 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 
 import ru.akh.spring_ws.dto.Book;
 import ru.akh.spring_ws.dto.BookContent;
+import ru.akh.spring_ws.ws.converter.BookContentReadConverter;
+import ru.akh.spring_ws.ws.converter.BookContentWriteConverter;
 import ru.akh.spring_ws.ws.converter.BookReadConverter;
 import ru.akh.spring_ws.ws.converter.BookWriteConverter;
 import ru.akh.spring_ws.ws.schema.BookField;
 import ru.akh.spring_ws.ws.schema.GetBooksByAuthorRequest;
 import ru.akh.spring_ws.ws.schema.GetBooksByAuthorResponse;
+import ru.akh.spring_ws.ws.schema.GetContentRequest;
+import ru.akh.spring_ws.ws.schema.GetContentResponse;
 import ru.akh.spring_ws.ws.schema.GetRequest;
 import ru.akh.spring_ws.ws.schema.GetResponse;
 import ru.akh.spring_ws.ws.schema.GetTopBooksRequest;
 import ru.akh.spring_ws.ws.schema.GetTopBooksResponse;
 import ru.akh.spring_ws.ws.schema.ObjectFactory;
+import ru.akh.spring_ws.ws.schema.PutContentRequest;
 import ru.akh.spring_ws.ws.schema.PutRequest;
 import ru.akh.spring_ws.ws.schema.PutResponse;
 
@@ -64,12 +69,18 @@ public class BookServiceClient {
     }
 
     public BookContent getContent(long id) {
-        // TODO Auto-generated method stub
-        return null;
+        GetContentRequest request = factory.createGetContentRequest();
+        request.setId(id);
+
+        GetContentResponse response = (GetContentResponse) template.marshalSendAndReceive(request);
+        return BookContentReadConverter.INSTANCE.convert(response.getResult());
     }
 
     public void putContent(BookContent content) {
-        // TODO Auto-generated method stub
+        PutContentRequest request = factory.createPutContentRequest();
+        request.setContent(BookContentWriteConverter.INSTANCE.convert(content));
+
+        template.marshalSendAndReceive(request);
     }
 
 }

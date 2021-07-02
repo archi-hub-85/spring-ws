@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
-import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import ru.akh.spring_ws.dto.Author;
 import ru.akh.spring_ws.dto.Book;
@@ -187,18 +185,6 @@ public class BookServiceTest extends AbstractServiceTest {
         Assertions.assertEquals(expected.getAuthor().getId(), actual.getAuthor().getId(), messagePrefix + "author.id");
         Assertions.assertEquals(expected.getAuthor().getName(), actual.getAuthor().getName(),
                 messagePrefix + "author.name");
-    }
-
-    private void assertThrowsSoapFault(String expectedFaultCode, String expectedFaultStringOrReason,
-            Executable executable) {
-        SoapFaultClientException exception = Assertions.assertThrows(SoapFaultClientException.class, executable);
-        logger.debug("exception = {}", exception.toString());
-
-        Assertions.assertEquals(expectedFaultCode, exception.getFaultCode().getLocalPart(), "faultCode");
-        if (expectedFaultStringOrReason != null) {
-            Assertions.assertEquals(expectedFaultStringOrReason, exception.getFaultStringOrReason(),
-                    "faultStringOrReason");
-        }
     }
 
 }

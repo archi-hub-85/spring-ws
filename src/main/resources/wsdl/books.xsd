@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://akh.ru/spring-ws/books" xmlns:tns="http://akh.ru/spring-ws/books" elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://akh.ru/spring-ws/books" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:tns="http://akh.ru/spring-ws/books"
+    elementFormDefault="qualified">
 
     <complexType name="Author">
         <sequence>
@@ -28,7 +29,7 @@
             <element name="id" type="long" />
             <element name="fileName" type="string" />
             <element name="mimeType" type="string" />
-            <element name="content" type="base64Binary" />
+            <element name="content" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" />
             <element name="size" type="long" />
         </sequence>
     </complexType>

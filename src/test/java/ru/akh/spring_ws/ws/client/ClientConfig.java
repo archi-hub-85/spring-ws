@@ -15,6 +15,7 @@ public class ClientConfig {
     public WebServiceTemplate webServiceTemplate(WebServiceTemplateBuilder builder) {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
         marshaller.setContextPath("ru.akh.spring_ws.ws.schema");
+        marshaller.setMtomEnabled(true);
 
         Wss4jSecurityInterceptor securityInterceptor = new Wss4jSecurityInterceptor();
         securityInterceptor.setSecurementActions("UsernameToken");
