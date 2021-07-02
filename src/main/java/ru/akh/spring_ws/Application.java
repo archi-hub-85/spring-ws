@@ -10,9 +10,11 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
 import org.apache.wss4j.common.ext.WSPasswordCallback;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,9 +30,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.server.EndpointInterceptor;
+import org.springframework.ws.server.endpoint.adapter.DefaultMethodEndpointAdapter;
 import org.springframework.ws.server.endpoint.adapter.method.MarshallingPayloadMethodProcessor;
-import org.springframework.ws.server.endpoint.adapter.method.MethodArgumentResolver;
-import org.springframework.ws.server.endpoint.adapter.method.MethodReturnValueHandler;
 import org.springframework.ws.soap.security.WsSecurityValidationException;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j2.callback.SpringSecurityPasswordValidationCallbackHandler;
@@ -87,22 +88,9 @@ public class Application {
         @Autowired
         private ObjectProvider<EndpointInterceptor> customInterceptorsProvider;
 
-        @Autowired
-        private MarshallingPayloadMethodProcessor methodProcessor;
-
         @Override
         public void addInterceptors(List<EndpointInterceptor> interceptors) {
             customInterceptorsProvider.forEach(interceptors::add);
-        }
-
-        @Override
-        public void addArgumentResolvers(List<MethodArgumentResolver> argumentResolvers) {
-            argumentResolvers.add(methodProcessor);
-        }
-
-        @Override
-        public void addReturnValueHandlers(List<MethodReturnValueHandler> returnValueHandlers) {
-            returnValueHandlers.add(methodProcessor);
         }
 
     }
@@ -112,12 +100,33 @@ public class Application {
     public static class MtomConfig {
 
         @Bean
-        public MarshallingPayloadMethodProcessor methodProcessor() {
-            Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-            marshaller.setContextPath("ru.akh.spring_ws.ws.schema");
-            marshaller.setMtomEnabled(true);
+        public DefaultMethodEndpointAdapterBeanPostProcessor defaultMethodEndpointAdapterBeanPostProcessor() {
+            return new DefaultMethodEndpointAdapterBeanPostProcessor();
+        }
 
-            return new MarshallingPayloadMethodProcessor(marshaller);
+        public static class DefaultMethodEndpointAdapterBeanPostProcessor implements BeanPostProcessor {
+
+            @Override
+            public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+                if (bean instanceof DefaultMethodEndpointAdapter) {
+                    DefaultMethodEndpointAdapter endpointAdapter = (DefaultMethodEndpointAdapter) bean;
+
+                    Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+                    marshaller.setContextPath("ru.akh.spring_ws.ws.schema");
+                    marshaller.setMtomEnabled(true);
+                    MarshallingPayloadMethodProcessor methodProcessor = new MarshallingPayloadMethodProcessor(
+                            marshaller);
+
+                    // we cannot use WsConfigurerAdapter because we need to set
+                    // MarshallingPayloadMethodProcessor before the default
+                    // XmlRootElementPayloadMethodProcessor
+                    endpointAdapter.getMethodArgumentResolvers().add(0, methodProcessor);
+                    endpointAdapter.getMethodReturnValueHandlers().add(0, methodProcessor);
+                }
+
+                return bean;
+            }
+
         }
 
     }
