@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 import ru.akh.spring_ws.dto.Author;
 import ru.akh.spring_ws.dto.Book;
 
-public class BookServiceTest extends AbstractServiceTest {
+public class BookServiceTest extends AbstractServiceTest<BookServiceClient> {
 
     @Test
     @WithReader

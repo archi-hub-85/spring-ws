@@ -23,7 +23,7 @@ abstract class AbstractEndpointTest extends AbstractTest {
     @Autowired
     private ApplicationContext applicationContext;
 
-    @Value("classpath:wsdl/books.xsd")
+    @Value("classpath:wsdl/book.xsd")
     protected Resource schemaResource;
 
     @MockBean

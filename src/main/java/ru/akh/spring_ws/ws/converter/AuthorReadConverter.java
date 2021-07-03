@@ -2,7 +2,7 @@ package ru.akh.spring_ws.ws.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import ru.akh.spring_ws.ws.schema.Author;
+import ru.akh.spring_ws.ws.schema.main.Author;
 
 public class AuthorReadConverter implements Converter<Author, ru.akh.spring_ws.dto.Author> {
 

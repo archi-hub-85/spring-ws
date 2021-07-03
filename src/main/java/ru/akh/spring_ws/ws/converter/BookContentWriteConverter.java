@@ -10,8 +10,8 @@ import javax.activation.DataSource;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.MediaType;
 
-import ru.akh.spring_ws.ws.schema.BookContent;
-import ru.akh.spring_ws.ws.schema.ObjectFactory;
+import ru.akh.spring_ws.ws.schema.content.BookContent;
+import ru.akh.spring_ws.ws.schema.content.ObjectFactory;
 
 public class BookContentWriteConverter implements Converter<ru.akh.spring_ws.dto.BookContent, BookContent> {
 

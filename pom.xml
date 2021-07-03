@@ -34,18 +34,31 @@
                 <version>2.5.0</version>
                 <executions>
                     <execution>
-                        <id>xjc</id>
+                        <id>xjc-book</id>
                         <goals>
                             <goal>xjc</goal>
                         </goals>
+                        <configuration>
+                            <packageName>ru.akh.spring_ws.ws.schema.main</packageName>
+                            <sources>
+                                <source>${project.basedir}/src/main/resources/wsdl/book.xsd</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>xjc-book-content</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>ru.akh.spring_ws.ws.schema.content</packageName>
+                            <sources>
+                                <source>${project.basedir}/src/main/resources/wsdl/bookContent.xsd</source>
+                            </sources>
+                            <clearOutputDir>false</clearOutputDir>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <packageName>ru.akh.spring_ws.ws.schema</packageName>
-                    <sources>
-                        <source>${project.basedir}/src/main/resources/wsdl/books.xsd</source>
-                    </sources>
-                </configuration>
             </plugin>
         </plugins>
     </build>

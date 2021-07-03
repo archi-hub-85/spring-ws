@@ -6,7 +6,7 @@ import java.io.UncheckedIOException;
 
 import org.springframework.core.convert.converter.Converter;
 
-import ru.akh.spring_ws.ws.schema.BookContent;
+import ru.akh.spring_ws.ws.schema.content.BookContent;
 
 public class BookContentReadConverter implements Converter<BookContent, ru.akh.spring_ws.dto.BookContent> {
 

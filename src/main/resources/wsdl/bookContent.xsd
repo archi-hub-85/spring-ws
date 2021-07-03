@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://akh.ru/spring-ws/book-content" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:tns="http://akh.ru/spring-ws/book-content"
+    elementFormDefault="qualified">
+
+    <complexType name="BookContent">
+        <sequence>
+            <element name="id" type="long" />
+            <element name="fileName" type="string" />
+            <element name="mimeType" type="string" />
+            <element name="content" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+            <element name="size" type="long" />
+        </sequence>
+    </complexType>
+
+    <element name="GetContentRequest">
+        <complexType>
+            <sequence>
+                <element name="id" type="long" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetContentResponse">
+        <complexType>
+            <sequence>
+                <element name="result" type="tns:BookContent" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="PutContentRequest">
+        <complexType>
+            <sequence>
+                <element name="content" type="tns:BookContent" />
+            </sequence>
+        </complexType>
+    </element>
+
+</schema>

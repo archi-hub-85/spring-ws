@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 
 import ru.akh.spring_ws.dto.BookContent;
 
-public class BookServiceContentTest extends AbstractServiceTest {
+public class BookContentServiceTest extends AbstractServiceTest<BookContentServiceClient> {
 
     @Test
     @WithReader

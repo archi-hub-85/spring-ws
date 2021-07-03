@@ -2,9 +2,9 @@ package ru.akh.spring_ws.ws.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import ru.akh.spring_ws.ws.schema.Author;
-import ru.akh.spring_ws.ws.schema.Book;
-import ru.akh.spring_ws.ws.schema.ObjectFactory;
+import ru.akh.spring_ws.ws.schema.main.Author;
+import ru.akh.spring_ws.ws.schema.main.Book;
+import ru.akh.spring_ws.ws.schema.main.ObjectFactory;
 
 public class BookWriteConverter implements Converter<ru.akh.spring_ws.dto.Book, Book> {
 

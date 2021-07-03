@@ -111,8 +111,9 @@ public class Application {
                 if (bean instanceof DefaultMethodEndpointAdapter) {
                     DefaultMethodEndpointAdapter endpointAdapter = (DefaultMethodEndpointAdapter) bean;
 
+                    // enable MTOM-processor for content-related types only
                     Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-                    marshaller.setContextPath("ru.akh.spring_ws.ws.schema");
+                    marshaller.setContextPath("ru.akh.spring_ws.ws.schema.content");
                     marshaller.setMtomEnabled(true);
                     MarshallingPayloadMethodProcessor methodProcessor = new MarshallingPayloadMethodProcessor(
                             marshaller);

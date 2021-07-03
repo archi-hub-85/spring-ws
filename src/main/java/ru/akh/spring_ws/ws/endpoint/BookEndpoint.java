@@ -12,28 +12,22 @@ import ru.akh.spring_ws.access.SecuredReader;
 import ru.akh.spring_ws.access.SecuredWriter;
 import ru.akh.spring_ws.dao.BookRepository;
 import ru.akh.spring_ws.dto.Book;
-import ru.akh.spring_ws.dto.BookContent;
-import ru.akh.spring_ws.ws.converter.BookContentReadConverter;
-import ru.akh.spring_ws.ws.converter.BookContentWriteConverter;
 import ru.akh.spring_ws.ws.converter.BookReadConverter;
 import ru.akh.spring_ws.ws.converter.BookWriteConverter;
-import ru.akh.spring_ws.ws.schema.GetBooksByAuthorRequest;
-import ru.akh.spring_ws.ws.schema.GetBooksByAuthorResponse;
-import ru.akh.spring_ws.ws.schema.GetContentRequest;
-import ru.akh.spring_ws.ws.schema.GetContentResponse;
-import ru.akh.spring_ws.ws.schema.GetRequest;
-import ru.akh.spring_ws.ws.schema.GetResponse;
-import ru.akh.spring_ws.ws.schema.GetTopBooksRequest;
-import ru.akh.spring_ws.ws.schema.GetTopBooksResponse;
-import ru.akh.spring_ws.ws.schema.ObjectFactory;
-import ru.akh.spring_ws.ws.schema.PutContentRequest;
-import ru.akh.spring_ws.ws.schema.PutRequest;
-import ru.akh.spring_ws.ws.schema.PutResponse;
+import ru.akh.spring_ws.ws.schema.main.GetBooksByAuthorRequest;
+import ru.akh.spring_ws.ws.schema.main.GetBooksByAuthorResponse;
+import ru.akh.spring_ws.ws.schema.main.GetRequest;
+import ru.akh.spring_ws.ws.schema.main.GetResponse;
+import ru.akh.spring_ws.ws.schema.main.GetTopBooksRequest;
+import ru.akh.spring_ws.ws.schema.main.GetTopBooksResponse;
+import ru.akh.spring_ws.ws.schema.main.ObjectFactory;
+import ru.akh.spring_ws.ws.schema.main.PutRequest;
+import ru.akh.spring_ws.ws.schema.main.PutResponse;
 
 @Endpoint
 public class BookEndpoint {
 
-    protected static final String NAMESPACE_URI = "http://akh.ru/spring-ws/books";
+    protected static final String NAMESPACE_URI = "http://akh.ru/spring-ws/book";
 
     private final ObjectFactory factory = new ObjectFactory();
     private final BookRepository repository;
@@ -92,25 +86,6 @@ public class BookEndpoint {
                     .addAll(books.stream().map(BookWriteConverter.INSTANCE::convert).collect(Collectors.toList()));
         }
         return response;
-    }
-
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetContentRequest")
-    @ResponsePayload
-    @SecuredReader
-    public GetContentResponse getContent(@RequestPayload GetContentRequest request) {
-        BookContent bookContent = repository.getContent(request.getId());
-
-        GetContentResponse response = factory.createGetContentResponse();
-        response.setResult(BookContentWriteConverter.INSTANCE.convert(bookContent));
-        return response;
-    }
-
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "PutContentRequest")
-    @ResponsePayload
-    @SecuredWriter
-    public void putContent(@RequestPayload PutContentRequest request) {
-        BookContent bookContent = BookContentReadConverter.INSTANCE.convert(request.getContent());
-        repository.putContent(bookContent);
     }
 
 }

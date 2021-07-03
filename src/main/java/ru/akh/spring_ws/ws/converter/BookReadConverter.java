@@ -2,7 +2,7 @@ package ru.akh.spring_ws.ws.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import ru.akh.spring_ws.ws.schema.Book;
+import ru.akh.spring_ws.ws.schema.main.Book;
 
 public class BookReadConverter implements Converter<Book, ru.akh.spring_ws.dto.Book> {
 
