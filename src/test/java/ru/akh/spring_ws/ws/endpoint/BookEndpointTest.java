@@ -7,6 +7,8 @@ import javax.xml.transform.Source;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.ws.test.server.RequestCreators;
 import org.springframework.ws.test.server.ResponseMatchers;
 import org.springframework.xml.transform.StringSource;
@@ -15,6 +17,11 @@ import ru.akh.spring_ws.dto.Author;
 import ru.akh.spring_ws.dto.Book;
 
 public class BookEndpointTest extends AbstractEndpointTest {
+
+    private static final String NAMESPACE_URI = BookEndpoint.NAMESPACE_URI;
+
+    @Value("classpath:wsdl/book.xsd")
+    private Resource schemaResource;
 
     @Test
     public void testGet() throws IOException {
